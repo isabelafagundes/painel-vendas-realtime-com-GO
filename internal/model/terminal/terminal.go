@@ -1,4 +1,4 @@
-package model
+package terminal
 
 type Terminal struct {
 	Numero     string `json:"numero"`

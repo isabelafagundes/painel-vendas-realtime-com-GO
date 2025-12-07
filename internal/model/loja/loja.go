@@ -1,4 +1,4 @@
-package model
+package loja
 
 type Loja struct {
 	Numero string `json:"numero"`

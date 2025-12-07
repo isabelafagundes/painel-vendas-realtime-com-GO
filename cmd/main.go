@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"os"
 	"painel-vendas-realtime/internal/config"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -10,6 +12,7 @@ import (
 const (
 	PORTA         = "PORTA"
 	TIPO_AMBIENTE = "TIPO_AMBIENTE"
+	INTERVALO     = 2 * time.Second
 )
 
 func main() {
@@ -19,7 +22,13 @@ func main() {
 	InicializarDependencias(grupo)
 	configuracao := carregarConfiguracao()
 
+	contexto, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	go simuladorVendasService.Iniciar(contexto, INTERVALO)
+
 	echo.Start(":" + configuracao.Porta)
+
 }
 
 func carregarConfiguracao() *config.Configuracao {
